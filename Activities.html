@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Planet Quiz!</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+
+    #innerWrapper
+    {
+        visibility: hidden;
+    }
+
+
+
+
+</style>
+<script src="Activities.js"></script>
+<script>
+var topic = "Animal Kingdom";
+var topicIndex = 0;
+var score = 0;
+var  topicArray = [{name:'Earth', val:0}, {name:'Mars', val:1}, {name:'Saturn', val:2}, {name:'Pluto', val:3}];
+
+function showQuestion(){
+    // Randomly select a topic from the subject array
+    // Get the image and display it
+    // Change the title and button labels
+    // Display the question
+    // Make the display area of the image and question visible
+
+    if (document.getElementById('btnLeft').innerHTML = 'Start Quiz')
+    {
+        document.getElementById('topic').innerHTML = 'Planets!';
+        document.getElementById('btnLeft').innerHTML = "Next Topic";
+        document.getElementById('innerWrapper').style.visibility = 'visible';
+
+            // Create an array which keeps track of topics
+
+    }
+
+    topicIndex = Math.floor(Math.random() * topicArray.length);
+
+    // Get the string of the next topic
+    var temp = topicArray[topicIndex];
+
+    topicIndex = temp['val'];
+
+
+    var imageName = "images/" + planets[topicIndex].image;
+
+
+    var currentIndex = planets[topicIndex].currentIndex;
+
+    document.getElementById('mainImage').src = imageName;
+
+    if (planets[topicIndex].done == true)
+    {
+        document.getElementById('questionLabel').innerHTML = "Answered all the questions for this topic!";
+
+        document.getElementById('innerLabel').style.visibility = 'hidden';
+
+
+        // cleans up once done with all topics
+        if (topicArray.length == 0)
+        {
+            cleanup();
+        }
+    }
+
+    else
+    {
+        document.getElementById('questionLabel').innerHTML = planets[topicIndex].questions[planets[topicIndex].currentIndex].quest;
+        document.getElementById('innerLabel').style.visibility = 'visible';
+        document.getElementById('questionLabel').innerHTML = planets[topicIndex].questions[planets[topicIndex].currentIndex].quest;
+        document.getElementById('nextButton').style.visibility = 'visible';
+
+
+
+    }
+
+}
+
+function nextQuestion(){
+
+
+    planets[topicIndex].currentIndex++;
+
+    document.getElementById('innerLabel').style.visibility = 'visible';
+
+
+    if (planets[topicIndex].currentIndex == planets[topicIndex].questions.length)
+    {
+        planets[topicIndex].done = true;
+        document.getElementById('questionLabel').innerHTML = "Answered all the questions for this topic!  Please Choose a different one!";
+        document.getElementById('innerLabel').style.visibility = 'hidden';
+
+        for (var i = 0; i < topicArray.length; i++)
+        {
+            if (topicArray[i].name == planets[topicIndex].name)
+            {
+                topicArray.splice(i,1);
+            }
+        }
+
+        document.getElementById('nextButton').style.visibility = 'hidden';
+
+        if (topicArray.length == 0)
+        {
+            cleanup();
+        }
+    }
+
+    else
+    {
+        var question = planets[topicIndex].questions[planets[topicIndex].currentIndex].quest;
+        document.getElementById('questionLabel').innerHTML = question;
+        document.getElementById('innerLabel').style.visibility = 'visible';
+        document.getElementById('nextButton').style.visibility = 'visible';
+
+    }
+
+}
+
+function checkAnswer(){
+	// Get the user input from the text field and compare it with the
+	// correct answer in the data array
+
+    var userInput = document.getElementById('innerLabel').value;
+    if (userInput == "")
+    {
+        alert("Please enter in a valid value");
+    }
+
+    else
+    {
+
+        userInput = userInput.toLowerCase();
+        var answer = planets[topicIndex].questions[planets[topicIndex].currentIndex].answer;
+        answer = answer.toLowerCase();
+
+        if (answer == userInput)
+        {
+            planets[topicIndex].score++;
+            alert("Correct Answer!");
+            score++;
+            document.getElementById('scoreLabel').innerHTML = "Total Score: " + score;
+
+        }
+
+        else
+        {
+            alert("Incorrect Answer");
+        }
+
+        document.getElementById('innerLabel').value = "";
+        document.getElementById('innerLabel').style.visibility = 'hidden';
+
+
+    }
+
+}
+
+function registerHandlers(){
+	// Register the handlers here
+
+    document.getElementById('btnLeft').onclick = showQuestion;
+    document.getElementById('nextButton').onclick = nextQuestion;
+    document.getElementById('btnRight').onclick = cleanup;
+
+
+}
+
+function cleanup()
+{
+    var totalScore = 0;
+    var resultString = "";
+    for (var i = 0; i < planets.length; i++)
+    {
+        totalScore += planets[i].score;
+        resultString += planets[i].name +": " + planets[i].score + "/4<br>";
+
+    }
+
+    resultString = "Total Score: " + totalScore + "/16<br><br> Topic Scores <br>" + resultString;
+    document.getElementById('summary').innerHTML = resultString;
+    document.getElementById('btnLeft').style.visibility = 'hidden';
+    document.getElementById('btnRight').style.visibility = 'hidden';
+    document.getElementById('innerWrapper').style.display = 'none';
+    document.getElementById('topic').style.fontSize = "40pt";
+    document.getElementById('topic').innerHTML = "Game Over";
+}
+
+</script>
+</head>
+<body onload="registerHandlers()">
+  <div class="container">
+
+    <nav class="navbar navbar-light bg-faded">
+      <ul class="nav navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="catalog.php">Store</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="login.php">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="registration.php">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+      </ul>
+    </nav>
+
+
+
+    <div class="jumbotron">
+      <h2 id="topic"> Show and Quiz!</h2>
+      <div id="innerWrapper">
+          <div>
+              <a id="scoreLabel">Total Score: 0</a>
+          </div>
+
+          <img src="images/earth.jpg" width="200" height="200"  alt="Earth" id="mainImage">
+          <form>
+
+              <label id = "questionLabel">Question </label>
+              <input type="text" name="gender" id="innerLabel" onchange="checkAnswer()"><br>
+          </form>
+              <button class="button" id="nextButton">Next Question</button>
+
+      </div>
+      <div>
+          <button class = "button" id="btnLeft">Start Quiz</button>
+          <button class="button" id="btnRight">End Quiz</button>
+      </div>
+      <div>
+          <p id="summary"></p>
+      </div>
+    <div>
+</div>
+</body>
+</html>
