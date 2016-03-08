@@ -75,7 +75,7 @@ if (isset($_GET['done'])) {
 
   // if (isset($_SESSION['user']))
   // {
-  ini_set('display_errors','On');
+    ini_set('display_errors','On');
     error_reporting(E_ALL);
     $db_host = "localhost";
     $db_user = "root";

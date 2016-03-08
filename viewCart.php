@@ -138,14 +138,17 @@ session_start();	// Start the session before you write your HTML page
     }
 
     function clearCart(){
-    	if (isset($_GET['clear'])){
-    	 	if (isset($_SESSION['cart'])){
+    	if (isset($_GET['clear']))
+      {
+    	 	if (isset($_SESSION['cart']))
+        {
     			unset($_SESSION['cart']);
-    	  	}
+    	  }
     		echo "Shopping Cart Cleared ";
         echo "<td><a href=\"catalog.php" . "\" class=\"btn btn-primary\">Return to Store</a></td>";
     	}
     }
+
 
     function checkout()
     {
@@ -156,6 +159,60 @@ session_start();	// Start the session before you write your HTML page
 
     function confirm()
     {
+      $mycart = $_SESSION['cart'];
+      $isValid = true;
+
+      ini_set('display_errors','On');
+      error_reporting(E_ALL);
+      $db_host = "localhost";
+      $db_user = "root";
+      $db_pass = "root";
+      $db_name = "EdCamps";
+      $con = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+      // Check connection
+      if (mysqli_connect_errno())
+      {
+        echo "Failed to connect to MySQL: " . mysqli_connect_error();
+        return;
+      }
+
+      foreach ($mycart as $key => $value)
+      {
+        $sql = "SELECT * FROM Catalog WHERE id='$key'";
+        $result = $con->query($sql);
+        if ($result)
+        {
+          $row = mysqli_fetch_assoc($result);
+          if (($row['quantity'] - $value) < 0)
+          {
+            echo "Error buying " . $row['id'] . " Not enough inventory<br>";
+            $isValid = false;
+          }
+
+        }
+        else
+        {
+          echo "Error: " . $sql . "<br>" . $con->error;
+        }
+      }
+
+      if ($isValid == true)
+      {
+        foreach ($mycart as $key => $value)
+        {
+          $sql = "SELECT * FROM Catalog WHERE id='$key'";
+          $result = $con->query($sql);
+          if ($result)
+          {
+            $row = mysqli_fetch_assoc($result);
+            $newValue = $row['quantity'] - $value;
+            $sql="UPDATE Catalog SET quantity='$newValue' WHERE id='$key'";
+            $con->query($sql);
+          }
+        }
+      }
+
+      $con->close();
       echo "Finished everything!";
     }
 

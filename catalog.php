@@ -66,7 +66,8 @@
 
 				echo "<thead>
 					 <tr>
-							<th>Item</th>
+					 		<th>Item</th>
+					 		<th>Quantity</th>
 							<th>Price</th>
 					 </tr>
 				</thead>";
@@ -79,6 +80,7 @@
 
 							echo "<tr>";
               echo "<td>" . $currentRow['name'] . "</td>";
+							echo "<td> " . $currentRow['quantity'] . "</td>";
 							echo "<td> $" . $currentRow['price'] . "</td>";
               echo "<td> <img src=" . $imgSrc . "alt=" . $currentRow['name'] . "/> </td>";
               echo "<td><a href=\"viewCart.php?add=" . $currentRow['id'] . "\">Add To Cart</a></td>";
@@ -91,7 +93,7 @@
 				echo "<div>";
 
 				echo "<a href=\"viewCart.php?show\">View Cart</a><br>";
-				echo "<a href=\"viewCart.php?drop\">Clear Cart</a><br>";
+				echo "<a href=\"viewCart.php?clear\">Clear Cart</a><br>";
 				echo "<a href=\"viewCart.php?checkout\">Checkout</a><br>";
 				echo "</div>";
       }
