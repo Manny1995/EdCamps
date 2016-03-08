@@ -36,8 +36,8 @@ function displayData()
     echo "<thead>
        <tr>
           <th>Name</th>
-          <th>CreatedAt</th>
           <th>Comment</th>
+          <th>Post Date</th>
        </tr>
     </thead>";
     echo "<tbody>";
@@ -47,9 +47,9 @@ function displayData()
         // print_r($currentRow);
 
           echo "<tr>";
-          echo "<td> $" . $currentRow['name'] . "</td>";
+          echo "<td> " . $currentRow['name'] . "</td>";
           echo "<td>" . $currentRow['comment'] . "</td>";
-          echo "<td> $" . $currentRow['createdAt'] . "</td>";
+          echo "<td> " . $currentRow['createdAt'] . "</td>";
           echo "</tr>";
     }
 
@@ -110,14 +110,14 @@ displayData();
 <!-- <form action="completeRegistration.php"> -->
 <form method="post" action="forum.php?done">
   <fieldset class="form-group">
-      <label for="exampleInputEmail1">Child's full name</label>
+      <label for="exampleInputEmail1">Parent's name</label>
       <span style="color:red;" class="error"></span>
       <input type="email" class="form-control" name="nameField" placeholder="John Doe">
   </fieldset>
 
   <div class="form-group">
-    <label for="comment">Comments: Allergies, medications, etc.</label>
-    <textarea class="form-control" rows="5" id="comment" name="descriptionField" placeholder="Allergic to peanuts, poison ivy, chocolate, etc."></textarea>
+    <label for="comment">Feedback</label>
+    <textarea class="form-control" rows="5" id="comment" name="descriptionField" placeholder="Write your experience here"></textarea>
   </div>
 
   <button type="submit" class="btn btn-primary" onClick="checkValues()">Submit</button>
