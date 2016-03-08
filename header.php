@@ -68,6 +68,10 @@
       <li class="nav-item">
         <a class="nav-link" href="about.html">About</a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="forum.php">Forum</a>
+      </li>
     </ul>
   </nav>
 

@@ -192,7 +192,7 @@ session_start();	// Start the session before you write your HTML page
  			checkout();
  			unset($_GET['checkout']);
  		} else {
-      $_SESSION['inStore'] = true;
+      // $_SESSION['inStore'] = true;
  			echo "You need to <a href=\"registration.php\">register</a> or <a href=\"login.php\">login</a> in!<br>";
  		}
  	}
